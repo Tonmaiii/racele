@@ -51,7 +51,10 @@ export const addGuess = () => {
     })
 
     addResult(validateGuess())
-    if ($currentGuess === $word || $results.length === 6) {
+    if ($currentGuess === $word) {
+        setTimeout(newGame, 1000)
+    } else if ($results.length === 6) {
+        alert($word)
         setTimeout(newGame, 1000)
     }
     resetGuess()
