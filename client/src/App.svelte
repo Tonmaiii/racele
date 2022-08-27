@@ -4,7 +4,9 @@
 </script>
 
 <main>
-    <Board />
+    <div>
+        <Board />
+    </div>
     <Keyboard />
 </main>
 
@@ -15,5 +17,13 @@
         align-items: center;
         min-height: 100%;
         flex-direction: column;
+    }
+
+    div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex: 1;
+        justify-content: center;
     }
 </style>

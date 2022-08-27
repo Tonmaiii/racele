@@ -3,6 +3,7 @@
     import {
         addLetter,
         correctLetters,
+        lockScreen,
         presentLetters,
         usedLetters
     } from '../../store/store'
@@ -18,7 +19,10 @@
         : colors[State.Unused]
 </script>
 
-<button on:click={() => addLetter(letter)} style="background-color: {color}">
+<button
+    on:click={() => $lockScreen || addLetter(letter)}
+    style="background-color: {color}"
+>
     {letter}
 </button>
 

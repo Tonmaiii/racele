@@ -1,0 +1,59 @@
+<script lang="ts">
+    import {
+        countdown,
+        finalTime,
+        lockScreen,
+        times,
+        word
+    } from '../store/store'
+
+    const ordinal = (n: number) =>
+        n === 0
+            ? ''
+            : n === 1
+            ? '1st'
+            : n === 2
+            ? '2nd'
+            : n === 3
+            ? '3rd'
+            : `${n}th`
+
+    const color = (n: number) =>
+        n === 1
+            ? '#D6AF3680'
+            : n === 2
+            ? '#A7A7AD80'
+            : n === 3
+            ? '#A7704480'
+            : '#ffffff80'
+
+    $: text = $countdown || ordinal($times.indexOf($finalTime) + 1)
+    $: time =
+        $finalTime === -2 ? '' : $finalTime === -1 ? 'DNF' : $finalTime / 1000
+</script>
+
+<div
+    style="visibility: {$lockScreen
+        ? 'visible'
+        : 'hidden'}; background-color: {color($times.indexOf($finalTime) + 1)}"
+>
+    {text} <br />
+    {time}
+</div>
+
+<style>
+    div {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: calc(min(25rem, (100vh - 4.5rem * 3) * 5/6 - 70px));
+        max-height: calc(
+            (6 / 5) * min(25rem, (100vh - 4.5rem * 3) * 5/6 - 70px)
+        );
+        font-size: 4rem;
+        text-align: center;
+    }
+</style>
