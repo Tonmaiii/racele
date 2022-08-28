@@ -1,0 +1,16 @@
+{
+    "dependencies": {
+        "socket.io": "^4.5.1",
+        "typescript": "^4.8.2"
+    },
+    "name": "server",
+    "version": "1.0.0",
+    "main": "server/dist/main.js",
+    "scripts": {
+        "dev": "npx nodemon"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": ""
+}

@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client'
 import { newGame, times } from './store'
 
-const socket = io(process.env.SERVER || '192.168.0.108:3000')
+const socket = io('https://pebble-striped-viscountess.glitch.me')
 
 socket.on('start', (word: string) => {
     console.log(word)
