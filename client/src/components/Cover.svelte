@@ -20,15 +20,15 @@
 
     const color = (n: number) =>
         n === 1
-            ? '#D6AF3680'
+            ? '#D6AF36'
             : n === 2
-            ? '#A7A7AD80'
+            ? '#A7A7AD'
             : n === 3
-            ? '#A7704480'
-            : '#ffffff80'
+            ? '#A77044'
+            : '#A0A0A0'
 
-    $: text =
-        $countdown || ordinal($times.indexOf($finalTime) + 1) || 'The word was'
+    $: text = $countdown || ordinal($times.indexOf($finalTime) + 1)
+
     $: time =
         $finalTime === -2 ? '' : $finalTime === -1 ? $word : $finalTime / 1000
 </script>
@@ -36,7 +36,8 @@
 <div
     style="visibility: {$lockScreen
         ? 'visible'
-        : 'hidden'}; background-color: {color($times.indexOf($finalTime) + 1)}"
+        : 'hidden'}; background-color: {color($times.indexOf($finalTime) + 1) +
+        'B0'}; color: white"
 >
     {text} <br />
     {time}
@@ -45,7 +46,6 @@
 <style>
     div {
         position: fixed;
-        color: white;
         width: 100%;
         height: 100%;
         display: flex;
