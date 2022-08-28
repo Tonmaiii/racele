@@ -1,6 +1,19 @@
 <script lang="ts">
     import Board from './components/board/Board.svelte'
     import Keyboard from './components/keyboard/Keyboard.svelte'
+    import {
+        addGuess,
+        addLetter,
+        lockScreen,
+        removeLetter
+    } from './store/store'
+
+    document.addEventListener('keydown', ({ key }) => {
+        if ($lockScreen) return
+        if (key === 'Backspace') removeLetter()
+        else if (key === 'Enter') addGuess()
+        else if (key.match(/^[a-zA-Z]$/)) addLetter(key.toUpperCase())
+    })
 </script>
 
 <main>
