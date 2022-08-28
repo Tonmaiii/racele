@@ -25,12 +25,23 @@
             ? '#A7A7AD'
             : n === 3
             ? '#A77044'
-            : '#A0A0A0'
+            : '#808080'
 
-    $: text = $countdown || ordinal($times.indexOf($finalTime) + 1)
-
-    $: time =
-        $finalTime === -2 ? '' : $finalTime === -1 ? $word : $finalTime / 1000
+    let text: string
+    let time: string
+    $: {
+        if ($finalTime === -1) text = 'The word was'
+        else
+            text = $countdown
+                ? `${$countdown}`
+                : ordinal($times.indexOf($finalTime) + 1)
+        time =
+            $finalTime === -2
+                ? ''
+                : $finalTime === -1
+                ? $word
+                : `${$finalTime / 1000}`
+    }
 </script>
 
 <div
