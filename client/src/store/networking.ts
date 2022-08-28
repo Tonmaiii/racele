@@ -4,7 +4,6 @@ import { newGame, times } from './store'
 const socket = io('SERVER_URL')
 
 socket.on('start', (word: string) => {
-    console.log(word)
     newGame(word)
 })
 

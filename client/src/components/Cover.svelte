@@ -27,9 +27,10 @@
             ? '#A7704480'
             : '#ffffff80'
 
-    $: text = $countdown || ordinal($times.indexOf($finalTime) + 1)
+    $: text =
+        $countdown || ordinal($times.indexOf($finalTime) + 1) || 'The word was'
     $: time =
-        $finalTime === -2 ? '' : $finalTime === -1 ? 'DNF' : $finalTime / 1000
+        $finalTime === -2 ? '' : $finalTime === -1 ? $word : $finalTime / 1000
 </script>
 
 <div
@@ -44,6 +45,7 @@
 <style>
     div {
         position: fixed;
+        color: white;
         width: 100%;
         height: 100%;
         display: flex;
