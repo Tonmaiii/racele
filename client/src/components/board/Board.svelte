@@ -25,9 +25,9 @@
         gap: 0.25rem;
         grid-template-columns: repeat(5, 1fr);
         width: 100%;
-        max-width: calc(min(25rem, (100vh - 4.5rem * 3) * 5/6 - 70px));
+        max-width: calc(min(25rem, (100vh - 4.5rem * 3) * 5/6 - 70px - 3rem));
         max-height: calc(
-            (6 / 5) * min(25rem, (100vh - 4.5rem * 3) * 5/6 - 70px)
+            (6 / 5) * min(25rem, (100vh - 4.5rem * 3) * 5/6 - 70px - 3rem)
         );
     }
 </style>

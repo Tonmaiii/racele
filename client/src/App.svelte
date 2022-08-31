@@ -1,6 +1,7 @@
 <script lang="ts">
     import Board from './components/board/Board.svelte'
     import Keyboard from './components/keyboard/Keyboard.svelte'
+    import Topbar from './components/topbar/Topbar.svelte'
     import {
         addGuess,
         addLetter,
@@ -17,6 +18,7 @@
 </script>
 
 <main>
+    <Topbar />
     <div>
         <Board />
     </div>

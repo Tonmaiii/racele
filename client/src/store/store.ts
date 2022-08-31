@@ -16,6 +16,7 @@ export const lockScreen = writable(true)
 export const startTime = writable(0)
 export const finalTime = writable(-2)
 export const times = writable([] as number[])
+export const playerCount = writable(0)
 
 let $currentGuess: string
 currentGuess.subscribe(guess => ($currentGuess = guess))
@@ -45,8 +46,8 @@ const startCountdown = () => {
     setTimeout(() => {
         countdown.set(0)
         lockScreen.set(false)
+        startTime.set(Date.now())
     }, 3000)
-    startTime.set(Date.now())
     finalTime.set(-2)
 }
 
