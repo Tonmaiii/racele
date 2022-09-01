@@ -17,6 +17,7 @@
         display: flex;
         justify-content: space-between;
         width: 100%;
-        max-width: calc(min(25rem, (100vh - 4.5rem * 3) * 5/6 - 70px - 3rem));
+        max-width: 35rem;
+        border-bottom: 1px solid #3a3a3c;
     }
 </style>
