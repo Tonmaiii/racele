@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 import { State } from '../util/states'
 import words from '../data/words'
-import { sendTime } from './networking'
+import { sendName, sendTime } from './networking'
 
 export const word = writable('')
 export const currentGuess = writable('')
@@ -17,6 +17,8 @@ export const startTime = writable(0)
 export const finalTime = writable(-2)
 export const times = writable([] as number[])
 export const playerCount = writable(0)
+export const name = writable('')
+export const messages = writable([] as string[])
 
 let $currentGuess: string
 currentGuess.subscribe(guess => ($currentGuess = guess))
@@ -26,6 +28,18 @@ let $results: State[][]
 results.subscribe(results => ($results = results))
 let $startTime: number
 startTime.subscribe(startTime => ($startTime = startTime))
+
+export const setName = (_name: string) => {
+    _name = _name.toUpperCase()
+    localStorage.setItem('name', _name)
+    name.set(_name)
+    sendName(_name)
+}
+
+setName(
+    localStorage.getItem('name') ??
+        words[Math.floor(Math.random() * words.length)]
+)
 
 export const newGame = (_word: string) => {
     word.set(_word)

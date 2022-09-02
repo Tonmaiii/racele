@@ -1,6 +1,7 @@
 <script lang="ts">
     import { lockScreen } from '../../store/store'
     import Players from './Players.svelte'
+    import Settings from './Settings.svelte'
     import Time from './Time.svelte'
 </script>
 
@@ -9,6 +10,7 @@
     {#if !$lockScreen}
         <Time />
     {/if}
+    <Settings />
 </div>
 
 <style>
