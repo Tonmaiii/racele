@@ -7,7 +7,9 @@
     "version": "1.0.0",
     "main": "dist/main.js",
     "scripts": {
-        "dev": "npx nodemon"
+        "dev": "npx nodemon",
+        "start": "node .",
+        "build": "tsc --build"
     },
     "keywords": [],
     "author": "",
