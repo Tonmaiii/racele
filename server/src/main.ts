@@ -26,12 +26,15 @@ io.on('connection', (socket: ClientSocket) => {
     }
 
     socket.on('complete', (time: number) => {
-        times.push(time)
-        io.emit('times', times)
         if (time) {
+            times.push(time)
+            io.emit('times', times)
             io.emit(
                 'message',
-                `${socket.name} completed the word in ${time / 1000}s`
+                `${socket.name} completed the word in ${time / 1000}s`,
+                (times.length === 1 && '#D6AF36') ||
+                    (times.length === 2 && '#A7A7AD') ||
+                    (times.length === 3 && '#A77044')
             )
         } else {
             io.emit('message', `${socket.name} used all of their guesses`)

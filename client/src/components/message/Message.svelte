@@ -4,8 +4,8 @@
 
 <div class="container">
     <div class="messages">
-        {#each $messages as message}
-            {message} <br />
+        {#each $messages as [message, color]}
+            <div style="color:{color}">{message}</div>
         {/each}
     </div>
 </div>

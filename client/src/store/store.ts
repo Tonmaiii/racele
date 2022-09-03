@@ -18,7 +18,7 @@ export const finalTime = writable(-2)
 export const times = writable([] as number[])
 export const playerCount = writable(0)
 export const name = writable('')
-export const messages = writable([] as string[])
+export const messages = writable([] as [string, string?][])
 
 let $currentGuess: string
 currentGuess.subscribe(guess => ($currentGuess = guess))
@@ -75,7 +75,7 @@ const win = () => {
 const lose = () => {
     finalTime.set(-1)
     lockScreen.set(true)
-    sendTime(Infinity)
+    sendTime(null)
 }
 
 export const addGuess = () => {

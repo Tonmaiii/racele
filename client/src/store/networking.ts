@@ -28,9 +28,10 @@ socket.on('players', (count: number) => {
     playerCount.set(count)
 })
 
-socket.on('message', (message: string) => {
+socket.on('message', (message: string, color?: string) => {
+    console.log(color)
     messages.update(messages => {
-        messages.push(message)
+        messages.push([message, color])
         return messages
     })
     setTimeout(() => messages.update(message => message.slice(1)), 10000)
