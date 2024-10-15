@@ -29,7 +29,6 @@ socket.on('players', (count: number) => {
 })
 
 socket.on('message', (message: string, color?: string) => {
-    console.log(color)
     messages.update(messages => {
         messages.push([message, color])
         return messages

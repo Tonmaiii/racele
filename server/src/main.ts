@@ -6,6 +6,7 @@ import ClientSocket from './clientSocket'
 let word: string
 
 const httpServer = createServer()
+httpServer.listen(process.env.PORT || 3000)
 const io = new Server(httpServer, {
     cors: {
         origin: '*',
@@ -62,8 +63,6 @@ const newGame = () => {
     times = []
     nextGame = setTimeout(newGame, 63000)
 }
-
-httpServer.listen(process.env.PORT || 3000)
 
 const disconnectSockets = () => {
     sockets = sockets.filter(socket => !socket.disconnected)

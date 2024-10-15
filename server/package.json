@@ -1,13 +1,14 @@
 {
     "dependencies": {
-        "socket.io": "^4.5.1",
-        "typescript": "^4.8.2"
+        "server": "file:",
+        "socket.io": "^4.8.0",
+        "typescript": "^4.9.5"
     },
     "name": "server",
     "version": "1.0.0",
     "main": "dist/main.js",
     "scripts": {
-        "dev": "npx nodemon",
+        "dev": "tsc --watch | npx nodemon",
         "start": "node .",
         "build": "tsc --build"
     },
