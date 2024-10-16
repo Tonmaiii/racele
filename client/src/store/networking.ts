@@ -28,8 +28,8 @@ export const sendName = (name: string) => {
     socket.emit('name', name)
 }
 
-socket.on('times', (_times: number[]) => {
-    times.set(_times.sort((a, b) => a - b))
+socket.on('times', (_times: { id: string; time: number }[]) => {
+    times.set(_times.sort((a, b) => a.time - b.time))
 })
 
 socket.on('players', (count: number) => {
