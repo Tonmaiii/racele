@@ -1,8 +1,7 @@
 <script lang="ts">
-    import Row from './Row.svelte'
-    import { guesses, currentGuess, results } from '../../store/store'
-    import { each } from 'svelte/internal'
+    import { currentGuess, guesses, results } from '../../store/store'
     import Cover from '../Cover.svelte'
+    import Row from './Row.svelte'
 
     $: words = [...$guesses, $currentGuess]
     $: submitted = $guesses.length

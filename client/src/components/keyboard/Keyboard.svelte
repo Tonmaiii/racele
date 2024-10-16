@@ -1,7 +1,7 @@
 <script lang="ts">
-    import Key from './Key.svelte'
-    import EnterKey from './EnterKey.svelte'
     import BackspaceKey from './BackspaceKey.svelte'
+    import EnterKey from './EnterKey.svelte'
+    import Key from './Key.svelte'
 
     //export let keys: string[]
 </script>

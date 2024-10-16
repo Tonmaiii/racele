@@ -45,9 +45,10 @@ export default {
     },
     plugins: [
         replace({
-            SERVER_URL: production
-                ? 'https://pebble-striped-viscountess.glitch.me'
-                : '127.0.0.1:3000'
+            SERVER_URL:
+                production ?
+                    'https://pebble-striped-viscountess.glitch.me'
+                :   '192.168.68.56:3000'
         }),
         svelte({
             preprocess: sveltePreprocess({ sourceMap: !production }),

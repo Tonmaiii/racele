@@ -14,12 +14,15 @@ const io = new Server(httpServer, {
     }
 })
 
-let times: number[] = []
+let times: { id: string; time: number }[] = []
 let sockets: ClientSocket[] = []
 let startedSockets: Socket[] = []
+let completed = 0
 io.on('connection', (socket: ClientSocket) => {
+    console.log(`socket connected: ${socket.id}`)
     disconnectSockets()
     sockets.push(socket)
+    socket.results = []
     io.emit('players', sockets.length)
     if (sockets.length === 1) {
         clearTimeout(nextGame)
@@ -27,15 +30,18 @@ io.on('connection', (socket: ClientSocket) => {
     }
 
     socket.on('complete', (time: number) => {
+        console.log(`${socket.name} completed in ${time}`)
+        completed++
         if (time) {
-            times.push(time)
+            times.push({ id: socket.id, time: time })
             io.emit('times', times)
             io.emit(
                 'message',
                 `${socket.name} completed the word in ${time / 1000}s`,
-                (times.length === 1 && '#D6AF36') ||
-                    (times.length === 2 && '#A7A7AD') ||
-                    (times.length === 3 && '#A77044')
+                times.length === 1 ? '#D6AF36'
+                : times.length === 2 ? '#A7A7AD'
+                : times.length === 3 ? '#A77044'
+                : '#FFFFFF'
             )
         } else {
             io.emit('message', `${socket.name} used all of their guesses`)
@@ -43,11 +49,13 @@ io.on('connection', (socket: ClientSocket) => {
     })
 
     socket.on('guess', (result: number[]) => {
+        console.log(`${socket.name} guessed: ${result}`)
         socket.results.push(result)
-        io.emit('update', socket.results)
+        io.emit('update', socket.id, socket.results)
     })
 
     socket.on('name', (name: string) => {
+        console.log(`${socket.id}:${socket.name} changed name to ${name}`)
         socket.name = name
     })
 })
@@ -58,9 +66,17 @@ const newGame = () => {
     io.emit('message', 'Next round starting')
     clearTimeout(nextGame)
     word = answers[Math.floor(Math.random() * answers.length)].toUpperCase()
-    io.emit('start', word)
+    io.emit(
+        'start',
+        word,
+        sockets.map(socket => ({ id: socket.id, name: socket.name }))
+    )
     startedSockets = sockets
     times = []
+    completed = 0
+    sockets.forEach(socket => {
+        socket.results = []
+    })
     nextGame = setTimeout(newGame, 63000)
 }
 
@@ -72,7 +88,7 @@ const disconnectSockets = () => {
 
 setInterval(() => {
     disconnectSockets()
-    if (times.length >= startedSockets.length) {
+    if (completed >= startedSockets.length) {
         clearTimeout(nextGame)
         nextGame = setTimeout(newGame, 500)
     }

@@ -1,11 +1,19 @@
 import { io } from 'socket.io-client'
 import type { State } from '../util/states'
-import { messages, newGame, playerCount, times } from './store'
+import {
+    messages,
+    newGame,
+    playerCount,
+    players,
+    times,
+    updateOtherResults
+} from './store'
 
 const socket = io('SERVER_URL')
 
-socket.on('start', (word: string) => {
+socket.on('start', (word: string, _players: { name: string; id: string }[]) => {
     newGame(word)
+    players.set(_players.filter(player => player.id !== socket.id))
 })
 
 export const sendTime = (time: number) => {
@@ -34,4 +42,9 @@ socket.on('message', (message: string, color?: string) => {
         return messages
     })
     setTimeout(() => messages.update(message => message.slice(1)), 10000)
+})
+
+socket.on('update', (id: string, results: State[][]) => {
+    if (id === socket.id) return
+    updateOtherResults(id, results)
 })

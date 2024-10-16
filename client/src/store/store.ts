@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
-import { State } from '../util/states'
 import words from '../data/words'
-import { sendName, sendTime } from './networking'
+import { State } from '../util/states'
+import { sendName, sendResult, sendTime } from './networking'
 
 export const word = writable('')
 export const currentGuess = writable('')
@@ -15,10 +15,12 @@ export const countdown = writable(0)
 export const lockScreen = writable(true)
 export const startTime = writable(0)
 export const finalTime = writable(-2)
-export const times = writable([] as number[])
+export const times = writable<{ id: string; time: number }[]>([])
 export const playerCount = writable(0)
 export const name = writable('')
 export const messages = writable([] as [string, string?][])
+export const opponentResults = writable<{ [key: string]: State[][] }>({})
+export const players = writable<{ name: string; id: string }[]>([])
 
 let $currentGuess: string
 currentGuess.subscribe(guess => ($currentGuess = guess))
@@ -28,6 +30,8 @@ let $results: State[][]
 results.subscribe(results => ($results = results))
 let $startTime: number
 startTime.subscribe(startTime => ($startTime = startTime))
+let $name: string
+name.subscribe(name => ($name = name))
 
 export const setName = (_name: string) => {
     _name = _name.toUpperCase()
@@ -46,10 +50,12 @@ export const newGame = (_word: string) => {
     resetGuess()
     resetGuesses()
     resetResults()
+    resetOpponentResults()
     usedLetters.set(new Set())
     presentLetters.set(new Set())
     correctLetters.set(new Set())
     startCountdown()
+    sendName($name)
 }
 
 const startCountdown = () => {
@@ -127,10 +133,22 @@ export const resetGuess = () => {
 
 export const addResult = (result: State[]) => {
     results.update(results => [...results, result])
+    sendResult(result)
 }
 
 export const resetResults = () => {
     results.set([])
+}
+
+export const updateOtherResults = (id: string, results: State[][]) => {
+    opponentResults.update(otherResults => {
+        otherResults[id] = results
+        return otherResults
+    })
+}
+
+export const resetOpponentResults = () => {
+    opponentResults.set({})
 }
 
 function validateGuess() {
@@ -140,12 +158,8 @@ function validateGuess() {
         .split('')
         .map(letter => ({ letter, state: State.Incorrect }))
 
-    /**
-     * @type {{letter: string, includedInGuess: boolean}[]}
-     */
-    const solutionLetters = solution
-        .split('')
-        .map(letter => ({ letter, includedInGuess: false }))
+    const solutionLetters: { letter: string; includedInGuess: boolean }[] =
+        solution.split('').map(letter => ({ letter, includedInGuess: false }))
 
     // First pass: correct letters in the correct place
     for (let i = 0; i < guessedLetters.length; i++) {

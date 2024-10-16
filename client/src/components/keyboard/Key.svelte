@@ -10,17 +10,15 @@
     import colors from '../../util/colors'
     import { State } from '../../util/states'
 
-    $: color = $correctLetters.has(letter)
-        ? colors[State.Correct]
-        : $presentLetters.has(letter)
-        ? colors[State.Present]
-        : $usedLetters.has(letter)
-        ? colors[State.Incorrect]
+    $: color =
+        $correctLetters.has(letter) ? colors[State.Correct]
+        : $presentLetters.has(letter) ? colors[State.Present]
+        : $usedLetters.has(letter) ? colors[State.Incorrect]
         : colors[State.Unused]
 </script>
 
 <button
-    on:click={() => $lockScreen || addLetter(letter)}
+    on:mouseup={() => $lockScreen || addLetter(letter)}
     style="background-color: {color}"
 >
     {letter}

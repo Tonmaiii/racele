@@ -1,5 +1,6 @@
 <script lang="ts">
     import { startTime } from '../../store/store'
+    import formatTime from '../../util/formatTime'
 
     let time: number
     const updateTime = () => {
@@ -7,13 +8,10 @@
         requestAnimationFrame(updateTime)
     }
     updateTime()
-
-    const timeToString = (time: number) =>
-        `${`${Math.floor(time / 1000)}`}.${`${time % 1000}`.padStart(3, '0')}`
 </script>
 
 <div>
-    {timeToString(time)}
+    {formatTime(time)}
 </div>
 
 <style>
