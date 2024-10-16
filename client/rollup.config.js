@@ -47,7 +47,7 @@ export default {
         replace({
             SERVER_URL:
                 production ?
-                    'https://pebble-striped-viscountess.glitch.me'
+                    'https://iron-pool-clavicle.glitch.me'
                 :   '192.168.68.56:3000'
         }),
         svelte({
