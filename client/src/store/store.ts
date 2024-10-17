@@ -13,7 +13,8 @@ export const correctLetters = writable(new Set() as Set<string>)
 
 export const countdown = writable(0)
 export const lockScreen = writable(true)
-export const startTime = writable(0)
+export const notStarted = writable(true)
+export const startTime = writable<number>(null)
 export const finalTime = writable(-2)
 export const times = writable<{ id: string; time: number }[]>([])
 export const playerCount = writable(0)
@@ -60,6 +61,7 @@ export const newGame = (_word: string) => {
 
 const startCountdown = () => {
     lockScreen.set(true)
+    notStarted.set(false)
     setTimeout(() => countdown.set(3), 0)
     setTimeout(() => countdown.set(2), 1000)
     setTimeout(() => countdown.set(1), 2000)

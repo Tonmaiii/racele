@@ -14,7 +14,7 @@
 
     $: visible =
         results?.length === 6 ||
-        results?.at(-1).every(state => state === State.Correct)
+        results?.at(-1)?.every(state => state === State.Correct)
     $: placement = $times.findIndex(time => time.id === id) + 1
     $: time = $times.find(time => time.id === id)
 </script>

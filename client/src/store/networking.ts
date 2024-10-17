@@ -5,14 +5,18 @@ import {
     newGame,
     playerCount,
     players,
+    startTime,
     times,
     updateOtherResults
 } from './store'
 
 const socket = io('SERVER_URL')
 
-socket.on('start', (word: string, _players: { name: string; id: string }[]) => {
+socket.on('start', (word: string) => {
     newGame(word)
+})
+
+socket.on('names', (_players: { name: string; id: string }[]) => {
     players.set(_players.filter(player => player.id !== socket.id))
 })
 
@@ -47,4 +51,8 @@ socket.on('message', (message: string, color?: string) => {
 socket.on('update', (id: string, results: State[][]) => {
     if (id === socket.id) return
     updateOtherResults(id, results)
+})
+
+socket.on('startTime', (time: number) => {
+    startTime.set(time)
 })

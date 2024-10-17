@@ -1,5 +1,5 @@
 import { createServer } from 'http'
-import { Server, Socket } from 'socket.io'
+import { Server } from 'socket.io'
 import answers from './answers'
 import ClientSocket from './clientSocket'
 
@@ -16,13 +16,24 @@ const io = new Server(httpServer, {
 
 let times: { id: string; time: number }[] = []
 let sockets: ClientSocket[] = []
-let startedSockets: Socket[] = []
+let startedSockets: ClientSocket[] = []
 let completed = 0
+let roundStartTime = 0
 io.on('connection', (socket: ClientSocket) => {
     console.log(`socket connected: ${socket.id}`)
     disconnectSockets()
     sockets.push(socket)
     socket.results = []
+
+    socket.emit(
+        'names',
+        startedSockets.map(socket => ({ id: socket.id, name: socket.name }))
+    )
+    startedSockets.forEach(opponent => {
+        socket.emit('update', opponent.id, opponent.results)
+    })
+    socket.emit('startTime', roundStartTime)
+
     io.emit('players', sockets.length)
     if (sockets.length === 1) {
         clearTimeout(nextGame)
@@ -66,9 +77,9 @@ const newGame = () => {
     io.emit('message', 'Next round starting')
     clearTimeout(nextGame)
     word = answers[Math.floor(Math.random() * answers.length)].toUpperCase()
+    io.emit('start', word)
     io.emit(
-        'start',
-        word,
+        'names',
         sockets.map(socket => ({ id: socket.id, name: socket.name }))
     )
     startedSockets = sockets
@@ -77,6 +88,7 @@ const newGame = () => {
     sockets.forEach(socket => {
         socket.results = []
     })
+    roundStartTime = Date.now()
     nextGame = setTimeout(newGame, 63000)
 }
 

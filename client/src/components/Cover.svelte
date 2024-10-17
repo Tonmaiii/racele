@@ -3,6 +3,7 @@
         countdown,
         finalTime,
         lockScreen,
+        notStarted,
         times,
         word
     } from '../store/store'
@@ -25,7 +26,8 @@
     let time: string
     let placement: number
     $: {
-        if ($finalTime === -1) text = 'The word was'
+        if ($notStarted) text = 'Waiting for next round'
+        else if ($finalTime === -1) text = 'The word was'
         else {
             placement = $times.findIndex(({ time }) => time === $finalTime) + 1
             text = $countdown ? `${$countdown}` : ordinal(placement)
